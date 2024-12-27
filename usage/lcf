@@ -1,0 +1,6 @@
+#!/bin/bash
+
+trimMacro=WITH_EDITOR,0,LOGTRACE_ENABLED,WITH_EDITOR_ONLY_DATA,UE_TRACE_ENABLED,!UE_BUILD_SHIPPING,VULKAN_HAS_DEBUGGING_ENABLED,ENABLE_RHI_VALIDATION
+exclusiveDir=Android,Apple,HoloLens,IOS,Lumin,Mac,Unix,Linux,Test
+
+LineCount -s $trimMacro -e $exclusiveDir -f

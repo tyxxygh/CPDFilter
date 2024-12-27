@@ -1,0 +1,183 @@
+#!/bin/bash
+
+ #/f/vulkanengine/Engine/Source/Runtime/Slate
+ #/f/vulkanengine/Engine/Source/Runtime/SlateCore
+ #/f/vulkanengine/Engine/Source/Runtime/SlateRHIRenderer
+ 
+ baseDir=/f/vulkanengine/Engine/Source/
+ 
+ print_help(){
+	echo "Usage: $0 [-h] [-c] [-f]"
+	echo " -h	Display this message"
+	echo " -c	Show result including core"
+	echo " -f	Show result prefixed with folder name"
+ }
+ 
+ printCore=0
+ printDetail=0
+ 
+ while [[ $# -gt 0 ]]; do
+	case "$1" in
+		-f)
+			printDetail=1
+			shift
+			;;
+		-c)
+			printCore=1
+			shift
+			;;
+		*)
+			echo "Error: Unknown option: $1"
+			print_help
+			exit 1
+			;;
+	esac
+done
+
+insert_element() {
+  local -n arr=$1
+  local index=$2
+  local element=$3
+  local new_arr=()
+  
+  for (( i=0; i<${#arr[@]}+1; i++ )); do
+    if [ $i -eq $index ]; then
+      new_arr+=($element)
+    fi
+    if [ $i -lt ${#arr[@]} ]; then
+      new_arr+=(${arr[$i]})
+    fi
+  done
+  
+  arr=("${new_arr[@]}")
+}
+
+filter="awk '{print $2}'"
+modules=($baseDir/Runtime/ApplicationCore
+ #$baseDir/Runtime/Core
+ $baseDir/Runtime/CoreUObject
+ $baseDir/Runtime/Engine
+ $baseDir/Runtime/EngineSettings
+ $baseDir/Runtime/InputCore
+ $baseDir/Runtime/Json
+ $baseDir/Runtime/Launch
+ $baseDir/Runtime/MaterialShaderQualitySettings
+ $baseDir/Runtime/PakFile
+ $baseDir/Runtime/Projects
+ $baseDir/Runtime/RenderCore
+ $baseDir/Runtime/Renderer
+ $baseDir/Developer/TargetPlatform
+ $baseDir/Runtime/VulkanRHI)
+
+
+if [[ $printCore -eq 1 ]] ; then
+	insert_element modules 1 "$baseDir/Runtime/Core"
+fi
+
+totalLine=0
+
+if [ $printDetail -eq 1 ] ; then
+	for module in ${modules[@]}
+	do
+		result=`lc ${module}`
+		lineCount=`echo $result | awk '{print $2}'`
+		echo $result
+		totalLine=$(($totalLine+$lineCount))
+	done
+	echo
+	echo "total:" $totalLine
+else
+	for module in ${modules[@]}
+	do
+		lineCount=`lc ${module} | awk '{print $2}'`
+		echo $lineCount
+		totalLine=$(($totalLine+$lineCount))
+	done
+	echo
+	echo "total:" $totalLine
+fi
+
+#filter="awk '{print $2}'"
+#if [ $# -gt 0 ] ; then
+#	lc /f/vulkanengine/Engine/Source/Runtime/ApplicationCore
+#	lc /f/vulkanengine/Engine/Source/Runtime/CoreUObject
+#	#lc /f/vulkanengine/Engine/Source/Runtime/Core
+#	#lc /f/vulkanengine/Engine/Source/Runtime/DeveloperSettings
+#	lc /f/vulkanengine/Engine/Source/Runtime/Engine
+#	lc /f/vulkanengine/Engine/Source/Runtime/EngineSettings
+#	lc /f/vulkanengine/Engine/Source/Runtime/InputCore
+#	#lc /f/vulkanengine/Engine/Source/Runtime/InputDevice
+#	lc /f/vulkanengine/Engine/Source/Runtime/Json
+#	lc /f/vulkanengine/Engine/Source/Runtime/Launch
+#	lc /f/vulkanengine/Engine/Source/Runtime/MaterialShaderQualitySettings
+#	lc /f/vulkanengine/Engine/Source/Runtime/PakFile
+#	#lc /f/vulkanengine/Engine/Source/Runtime/PhysicsCore
+#	lc /f/vulkanengine/Engine/Source/Runtime/Projects
+#	lc /f/vulkanengine/Engine/Source/Runtime/RenderCore
+#	lc /f/vulkanengine/Engine/Source/Runtime/Renderer
+#	#lc /f/vulkanengine/Engine/Source/Runtime/RHI
+#	#lc /f/vulkanengine/Engine/Source/Runtime/RSA
+#	lc /f/vulkanengine/Engine/Source/Runtime/Slate
+#	lc /f/vulkanengine/Engine/Source/Runtime/SlateCore
+#	lc /f/vulkanengine/Engine/Source/Runtime/SlateRHIRenderer
+#	lc /f/vulkanengine/Engine/Source/Developer/TargetPlatform
+#	lc /f/vulkanengine/Engine/Source/Runtime/VulkanRHI
+#else
+#	lc /f/vulkanengine/Engine/Source/Runtime/ApplicationCore | awk '{print $2}'
+#	#lc /f/vulkanengine/Engine/Source/Runtime/Core
+#	lc /f/vulkanengine/Engine/Source/Runtime/CoreUObject | awk '{print $2}'
+#	#lc /f/vulkanengine/Engine/Source/Runtime/DeveloperSettings | awk '{print $2}'
+#	lc /f/vulkanengine/Engine/Source/Runtime/Engine | awk '{print $2}'
+#	lc /f/vulkanengine/Engine/Source/Runtime/EngineSettings | awk '{print $2}'
+#	lc /f/vulkanengine/Engine/Source/Runtime/InputCore | awk '{print $2}'
+#	#lc /f/vulkanengine/Engine/Source/Runtime/InputDevice | awk '{print $2}'
+#	lc /f/vulkanengine/Engine/Source/Runtime/Json | awk '{print $2}'
+#	lc /f/vulkanengine/Engine/Source/Runtime/Launch | awk '{print $2}'
+#	lc /f/vulkanengine/Engine/Source/Runtime/MaterialShaderQualitySettings | awk '{print $2}'
+#	lc /f/vulkanengine/Engine/Source/Runtime/PakFile | awk '{print $2}'
+#	#lc /f/vulkanengine/Engine/Source/Runtime/PhysicsCore | awk '{print $2}'
+#	lc /f/vulkanengine/Engine/Source/Runtime/Projects | awk '{print $2}'
+#	lc /f/vulkanengine/Engine/Source/Runtime/RenderCore | awk '{print $2}'
+#	lc /f/vulkanengine/Engine/Source/Runtime/Renderer | awk '{print $2}'
+#	#lc /f/vulkanengine/Engine/Source/Runtime/RHI | awk '{print $2}'
+#	#lc /f/vulkanengine/Engine/Source/Runtime/RSA | awk '{print $2}'
+#	lc /f/vulkanengine/Engine/Source/Runtime/Slate | awk '{print $2}'
+#	lc /f/vulkanengine/Engine/Source/Runtime/SlateCore | awk '{print $2}'
+#	lc /f/vulkanengine/Engine/Source/Runtime/SlateRHIRenderer | awk '{print $2}'
+#	lc /f/vulkanengine/Engine/Source/Developer/TargetPlatform | awk '{print $2}'
+#	lc /f/vulkanengine/Engine/Source/Runtime/VulkanRHI | awk '{print $2}'
+#fi
+
+
+#lc /f/vulkanengine/Engine/Source/Developer/TargetPlatform
+#lc /f/vulkanengine/Engine/Source/Runtime/ApplicationCore
+#lc /f/vulkanengine/Engine/Source/Runtime/AssetRegistry
+#lc /f/vulkanengine/Engine/Source/Runtime/Core
+#lc /f/vulkanengine/Engine/Source/Runtime/CoreUObject
+#lc /f/vulkanengine/Engine/Source/Runtime/DeveloperSettings
+#lc /f/vulkanengine/Engine/Source/Runtime/Engine
+#lc /f/vulkanengine/Engine/Source/Runtime/EngineSettings
+#lc /f/vulkanengine/Engine/Source/Runtime/ImageWrapper
+#lc /f/vulkanengine/Engine/Source/Runtime/InputCore
+#lc /f/vulkanengine/Engine/Source/Runtime/InputDevice
+#lc /f/vulkanengine/Engine/Source/Runtime/InstallBundleManager
+#lc /f/vulkanengine/Engine/Source/Runtime/Json
+#lc /f/vulkanengine/Engine/Source/Runtime/Launch
+#lc /f/vulkanengine/Engine/Source/Runtime/MaterialShaderQualitySettings
+#lc /f/vulkanengine/Engine/Source/Runtime/MeshDescription
+#lc /f/vulkanengine/Engine/Source/Runtime/MeshUtilitiesCommon
+#lc /f/vulkanengine/Engine/Source/Runtime/PakFile
+#lc /f/vulkanengine/Engine/Source/Runtime/PhysicsCore
+#lc /f/vulkanengine/Engine/Source/Runtime/PhysXCooking
+#lc /f/vulkanengine/Engine/Source/Runtime/Projects
+#lc /f/vulkanengine/Engine/Source/Runtime/RawMesh
+#lc /f/vulkanengine/Engine/Source/Runtime/RenderCore
+#lc /f/vulkanengine/Engine/Source/Runtime/Renderer
+#lc /f/vulkanengine/Engine/Source/Runtime/RHI
+#lc /f/vulkanengine/Engine/Source/Runtime/RSA
+#lc /f/vulkanengine/Engine/Source/Runtime/Slate
+#lc /f/vulkanengine/Engine/Source/Runtime/SlateCore
+#lc /f/vulkanengine/Engine/Source/Runtime/SlateRHIRenderer
+#lc /f/vulkanengine/Engine/Source/Runtime/StaticMeshDescription
+#lc /f/vulkanengine/Engine/Source/Runtime/TraceLog
+#lc /f/vulkanengine/Engine/Source/Runtime/VulkanRHI

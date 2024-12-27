@@ -1,0 +1,41 @@
+#!/bin/bash
+
+filter="awk '{print $2}'"
+modules=(/f/vulkanengine/Engine/Source/Runtime/ApplicationCore
+ #/f/vulkanengine/Engine/Source/Runtime/Core
+ /f/vulkanengine/Engine/Source/Runtime/CoreUObject
+ /f/vulkanengine/Engine/Source/Runtime/Engine
+ /f/vulkanengine/Engine/Source/Runtime/EngineSettings
+ /f/vulkanengine/Engine/Source/Runtime/InputCore
+ /f/vulkanengine/Engine/Source/Runtime/Json
+ /f/vulkanengine/Engine/Source/Runtime/Launch
+ /f/vulkanengine/Engine/Source/Runtime/MaterialShaderQualitySettings
+ /f/vulkanengine/Engine/Source/Runtime/PakFile
+ /f/vulkanengine/Engine/Source/Runtime/Projects
+ /f/vulkanengine/Engine/Source/Runtime/RenderCore
+ /f/vulkanengine/Engine/Source/Runtime/Renderer
+ /f/vulkanengine/Engine/Source/Developer/TargetPlatform
+ /f/vulkanengine/Engine/Source/Runtime/VulkanRHI)
+
+totalLine=0
+
+if [ $# -gt 0 ] ; then
+	for module in ${modules[@]}
+	do
+		result=`lc ${module}`
+		lineCount=`echo $result | awk '{print $2}'`
+		echo $result
+		totalLine=$(($totalLine+$lineCount))
+	done
+	echo
+	echo "total:" $totalLine
+else
+	for module in ${modules[@]}
+	do
+		lineCount=`lc ${module} | awk '{print $2}'`
+		echo $lineCount
+		totalLine=$(($totalLine+$lineCount))
+	done
+	echo
+	echo "total:" $totalLine
+fi
