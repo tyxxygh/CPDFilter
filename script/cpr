@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#timecode=$(date +%Y%m%d_%H%M%S)
+timecode=20241227
+#timecode=20241119
+echo $timecode
+outputName="./RenderCPD_"${timecode}".xlsx"
+
+# cpd.sh  -d "F:/vulkanengine/Engine/Source/Runtime/RenderCore,F:/vulkanengine/Engine/Source/Runtime/Renderer,F:/zzchange/zzorg" -o ${outputName} -m "vulkanengine|zzorg"
+#cpd.sh  -d "F:/vulkanengine/Engine/Source/Runtime/Renderer,F:/zzchange/zzorg" -o ${outputName} -m "vulkanengine|zzorg"
+cpd.sh  -d "F:/newengine/dtsre/RenderEngine,F:/zzchange/zznewcode/comp/zzorg" -o ${outputName} -m "newengine|zzorg"
+start ${outputName}

@@ -1,0 +1,6 @@
+timecode=$(date +%Y%m%d_%H%M%S)
+echo $timecode
+outputName="./newChangeCPD_"${timecode}".xlsx"
+
+cpd.sh  -d "./vulkanengine,./org" -o ${outputName} -m "vulkanengine|org"
+start ${outputName}

@@ -1,0 +1,30 @@
+#!/bin/bash
+
+#timecode=$(date +%Y%m%d_%H%M%S)
+timecode=20241227
+echo $timecode
+outputName="./EngineCPD_"${timecode}".xlsx"
+
+#basePath="F:/vulkanengine/Engine/Source/Runtime/"
+#orgPath="F:/zzchange/zzorg"
+#
+#cpd.sh  -d "${orgPath},${basePath}ApplicationCore" -o ${outputName} -m "vulkanengine|zzorg"
+#cpd.sh  -d "${orgPath},${basePath}Core" -o ${outputName} -m "vulkanengine|zzorg" -a
+#cpd.sh  -d "${orgPath},${basePath}Engine" -o ${outputName} -m "vulkanengine|zzorg" -a
+#cpd.sh  -d "${orgPath},${basePath}Launcher" -o ${outputName} -m "vulkanengine|zzorg" -a
+#cpd.sh  -d "${orgPath},${basePath}RenderCore" -o ${outputName} -m "vulkanengine|zzorg" -a
+#cpd.sh  -d "${orgPath},${basePath}Renderer" -o ${outputName} -m "vulkanengine|zzorg" -a
+#cpd.sh  -d "${orgPath},${basePath}Vulkan" -o ${outputName} -m "vulkanengine|zzorg" -a
+#cpd.sh  -d "F:/change/mycode,F:/change/org" -o ${outputName} -m "mycode|org"
+#cpd.sh  -d "F:/change/zzcode,F:/change/org" -o ${outputName} -m "zzcode|org"
+
+basePath="F:/newengine/dtsre"
+orgPath="F:/zzchange/zznewcode/comp/zzorg"
+
+tokenThrd=75
+
+cpd.sh  -d "${orgPath},${basePath}/CommonLibrary" -b CommonLibrary -o ${outputName} -t ${tokenThrd}  -m "newengine|zzorg"
+cpd.sh  -d "${orgPath},${basePath}/RenderEngine" -b RenderEngine -o ${outputName}  -t ${tokenThrd} -m "newengine|zzorg" -a
+cpd.sh  -d "${orgPath},${basePath}/RenderSystem" -b RenderSystem -o ${outputName}  -t ${tokenThrd} -m "newengine|zzorg" -a
+
+start ${outputName}
